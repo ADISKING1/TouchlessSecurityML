@@ -12,7 +12,7 @@ def task():
     camera_video.set(4, 960)
 
     # Create named window for resizing purposes.
-    cv2.namedWindow('Counted Fingers Visualization', cv2.WINDOW_NORMAL)
+    cv2.namedWindow('Counted Fingers Visualization', cv2.WINDOW_FULLSCREEN)
 
     # Iterate until the webcam is accessed successfully.
     while camera_video.isOpened():

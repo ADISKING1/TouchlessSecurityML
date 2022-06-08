@@ -502,9 +502,9 @@ if results.multi_hand_landmarks:
 #     if results.multi_hand_landmarks:
 #         # Count the number of fingers up of each hand in the frame.
 #         frame, fingers_statuses, count = countFingers(frame, results, display=False)
+#         frame = annotate(frame, results, fingers_statuses, count, display=False)
 #
 #     # Visualize the counted fingers.
-#     frame = annotate(frame, results, fingers_statuses, count, display=False)
 #
 #     # Display the frame.
 #     cv2.imshow('Counted Fingers Visualization', frame)
