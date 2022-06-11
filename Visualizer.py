@@ -12,7 +12,7 @@ def task():
     camera_video.set(4, 960)
 
     # Create named window for resizing purposes.
-    cv2.namedWindow('Counted Fingers Visualization', cv2.WINDOW_FULLSCREEN)
+    cv2.namedWindow('Counted Fingers Visualization', cv2.WINDOW_NORMAL)
 
     # Iterate until the webcam is accessed successfully.
     while camera_video.isOpened():
@@ -35,7 +35,7 @@ def task():
         # Check if the hands landmarks in the frame are detected.
         if results.multi_hand_landmarks:
             # Count the number of fingers up of each hand in the frame.
-            frame, fingers_statuses, count = main.countFingers(frame, results, display=False)
+            frame, fingers_statuses, count = main.countFingers(frame, results, draw=False, display=False)
 
         # Visualize the counted fingers.
         frame = main.annotate(frame, results, fingers_statuses, count, display=False)

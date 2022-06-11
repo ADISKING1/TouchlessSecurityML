@@ -10,7 +10,7 @@ def verifyPwd(pwd, hashedPwd):
     bytePwd = pwd.encode('utf-8')
     return bcrypt.checkpw(bytePwd, hashedPwd)
 
-#
+
 # pwd = '1234'
 #
 # mySalt = bcrypt.gensalt()

@@ -3,7 +3,7 @@ import bcrypt
 from PasswordUtility import hashPwd, verifyPwd
 
 
-def createUser(id,  name, password):
+def createUser(id, name, password):
     import sqlite3
     conn = sqlite3.connect('/home/naditya/Others/Touchless/users.db')
     cursor = conn.cursor()
@@ -18,24 +18,28 @@ def createUser(id,  name, password):
     conn.close()
 
 
-def getUserPassword(id):
+def getUserNamePassword(id):
     import sqlite3
     conn = sqlite3.connect('/home/naditya/Others/Touchless/users.db')
     cursor = conn.cursor()
     print("Opened database successfully")
 
-    for row in cursor.execute("SELECT PASSWORD FROM USERS WHERE ID=" + id):
-        password = row[0]
+    name, password = "", ""
+
+    for row in cursor.execute("SELECT NAME, PASSWORD FROM USERS WHERE ID=" + id):
+        name = row[0]
+        password = row[1]
         break
 
     conn.commit()
     conn.close()
 
-    return password
+    return name, password
 
 
-mySalt = bcrypt.gensalt()
-createUser('96', 'Aditya', '1234')
+# mySalt = bcrypt.gensalt()
+# createUser('96', 'Aditya', '1234')
 
-password = getUserPassword('96')
-print(verifyPwd('1234', password))
+name, password = getUserNamePassword('99')
+if(name != ""):
+    print(verifyPwd('1234', password))

@@ -5,9 +5,9 @@ import numpy as np
 import mediapipe as mp
 import matplotlib.pyplot as plt
 
-
-
 # Initialize the mediapipe hands class.
+import Constants
+
 mp_hands = mp.solutions.hands
 
 # Set up the Hands functions for images and videos.
@@ -73,8 +73,6 @@ def detectHandsLandmarks(image, hands, draw=True, display=True):
 
         # Return the output image and results of hands landmarks detection.
         return output_image, results
-
-
 
 
 # Read a sample image and perform hands landmarks detection on it.
@@ -152,11 +150,19 @@ def countFingers(image, results, draw=True, display=True):
             count[hand_label.upper()] += 1
 
     # Check if the total count of the fingers of both hands are specified to be written on the output image.
+    # if draw:
+    #     # Write the total count of the fingers of both hands on the output image.
+    #     cv2.putText(output_image, " Total Fingers: ", (10, 25), cv2.FONT_HERSHEY_COMPLEX, Constants.FontScale,
+    #                 (20, 255, 155), 2)
+    #     cv2.putText(output_image, str(sum(count.values())), (width // 2 - 150, 240), cv2.FONT_HERSHEY_SIMPLEX,
+    #                 Constants.FontScale * 2, (20, 255, 155), 10, 10)
+    #
+
     if draw:
         # Write the total count of the fingers of both hands on the output image.
-        cv2.putText(output_image, " Total Fingers: ", (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (20, 255, 155), 2)
-        cv2.putText(output_image, str(sum(count.values())), (width // 2 - 150, 240), cv2.FONT_HERSHEY_SIMPLEX,
-                    8.9, (20, 255, 155), 10, 10)
+        cv2.putText(output_image, "Total Fingers: " + str(sum(count.values())), Constants.FingerCountTextPos,
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    Constants.FontScale, (20, 255, 155), 2)
 
     # Check if the output image is specified to be displayed.
     if display:
@@ -248,6 +254,14 @@ def annotate(image, results, fingers_statuses, count, display=True):
             # In alpha channel, 0 represents the transparent area and 255 represents the visible area.
             hand_imageBGRA = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
 
+            scale_percent = Constants.GraphicScale  # percent of original size
+            width = int(hand_imageBGRA.shape[1] * scale_percent / 100)
+            height = int(hand_imageBGRA.shape[0] * scale_percent / 100)
+            dim = (width, height)
+
+            # resize image
+            hand_imageBGRA = cv2.resize(hand_imageBGRA, dim, interpolation=cv2.INTER_AREA)
+
             # Retrieve all the alpha channel values of the hand image.
             alpha_channel = hand_imageBGRA[:, :, -1]
 
@@ -259,16 +273,16 @@ def annotate(image, results, fingers_statuses, count, display=True):
             hand_height, hand_width, _ = hand_imageBGR.shape
 
             # Retrieve the region of interest of the output image where the handprint image will be placed.
-            ROI = output_image[30: 30 + hand_height,
-                  (hand_index * width // 2) + width // 12: ((hand_index * width // 2) + width // 12 + hand_width)]
+            ROI = output_image[100: 100 + hand_height,
+                  (hand_index * width // 1) + width // 12: ((hand_index * width // 1) + width // 12 + hand_width)]
 
             # Overlay the handprint image by updating the pixel values of the ROI of the output image at the
             # indexes where the alpha channel has the value 255.
             ROI[alpha_channel == 255] = hand_imageBGR[alpha_channel == 255]
 
             # Update the ROI of the output image with resultant image pixel values after overlaying the handprint.
-            output_image[30: 30 + hand_height,
-            (hand_index * width // 2) + width // 12: ((hand_index * width // 2) + width // 12 + hand_width)] = ROI
+            output_image[100: 100 + hand_height,
+            (hand_index * width // 1) + width // 12: ((hand_index * width // 1) + width // 12 + hand_width)] = ROI
 
     ########################################################################################################################
 
@@ -387,43 +401,32 @@ def recognizeGestures(image, fingers_statuses, count, draw=True, display=True):
         return output_image, hands_gestures
 
 
-
-
-
-
-
 # Read a sample image and perform the hand gesture recognition on it after flipping it horizontally.
 image = cv2.imread('media/sample1.jpg')
 flipped_image = cv2.flip(image, 1)
 _, results = detectHandsLandmarks(flipped_image, hands, display=False)
 if results.multi_hand_landmarks:
-    output_image, fingers_statuses, count = countFingers(image, results, draw=False, display = False)
+    output_image, fingers_statuses, count = countFingers(image, results, draw=False, display=False)
     recognizeGestures(image, fingers_statuses, count)
-
-
-
 
 # Read another sample image and perform the hand gesture recognition on it after flipping it horizontally.
 image = cv2.imread('media/sample2.jpg')
 flipped_image = cv2.flip(image, 1)
 _, results = detectHandsLandmarks(flipped_image, hands, display=False)
 if results.multi_hand_landmarks:
-    output_image, fingers_statuses, count =countFingers(image, results, draw=False, display = False)
+    output_image, fingers_statuses, count = countFingers(image, results, draw=False, display=False)
     recognizeGestures(image, fingers_statuses, count)
-
-
-
-
 
 # Read another sample image and perform the hand gesture recognition on it after flipping it horizontally.
 image = cv2.imread('media/sample3.jpg')
 flipped_image = cv2.flip(image, 1)
 _, results = detectHandsLandmarks(flipped_image, hands, display=False)
 if results.multi_hand_landmarks:
-    output_image, fingers_statuses, count =countFingers(image, results, draw=False, display = False)
+    output_image, fingers_statuses, count = countFingers(image, results, draw=False, display=False)
     recognizeGestures(image, fingers_statuses, count)
 
-#1. Counter
+
+# 1. Counter
 #
 # # Initialize the VideoCapture object to read from the webcam.
 # camera_video = cv2.VideoCapture(0)
@@ -467,9 +470,6 @@ if results.multi_hand_landmarks:
 # # Release the VideoCapture Object and close the windows.
 # camera_video.release()
 # cv2.destroyAllWindows()
-
-
-
 
 
 # 2. Visualizer
@@ -519,9 +519,6 @@ if results.multi_hand_landmarks:
 # # Release the VideoCapture Object and close the windows.
 # camera_video.release()
 # cv2.destroyAllWindows()
-
-
-
 
 
 # 3. Gesture
@@ -716,3 +713,33 @@ if results.multi_hand_landmarks:
 # # Release the VideoCapture Object and close the windows.
 # camera_video.release()
 # cv2.destroyAllWindows()
+
+def showText(output_image, text, stateInfo, info=""):
+    cv2.putText(output_image, text + " " + info, Constants.StateTextPos,
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Constants.FontScale, (20, 255, 155), 2)
+    cv2.putText(output_image, stateInfo, Constants.StateInfoTextPos,
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Constants.FontScale, (20, 255, 155), 2)
+
+def showPin(output_image, pin):
+    lastDigit = ""
+    if len(pin) != 0:
+        lastDigit = pin[len(pin) - 1]
+    displayPin = ""
+    i = 0
+    while len(pin) >= i + 2:
+        i += 1
+        displayPin += "*"
+    displayPin += lastDigit
+    # print(displayPin)
+    cv2.putText(output_image, "PIN: " + displayPin, Constants.PinTextPos,
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Constants.FontScale * 2, (20, 255, 155), 5)
+
+def playMusic(music):
+    pygame.mixer.music.load("media/" + music + ".mp3")
+    pygame.mixer.music.play()
+    cv2.waitKey(100)
+
+# showPin(None, '')

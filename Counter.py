@@ -7,8 +7,8 @@ def task():
     print("starting task")
     # Initialize the VideoCapture object to read from the webcam.
     camera_video = cv2.VideoCapture(0)
-    camera_video.set(3, 800)
-    camera_video.set(4, 600)
+    camera_video.set(3, 1024.0)
+    camera_video.set(4, 768.0)
 
 
     # Create named window for resizing purposes.

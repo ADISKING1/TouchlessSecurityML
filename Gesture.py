@@ -29,7 +29,7 @@ def task():
     pygame.mixer.music.load("media/cam.mp3")
 
     # Initialize the number of consecutive frames on which we want to check the hand gestures before triggering the events.
-    num_of_frames = 5
+    num_of_frames = 20
 
     # Initialize a dictionary to store the counts of the consecutive frames with the hand gestures recognized.
     counter = {'V SIGN': 0, 'SPIDERMAN SIGN': 0, 'HIGH-FIVE SIGN': 0}
