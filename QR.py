@@ -54,7 +54,7 @@ def getQR(image):
         barcodeType = obj.type
         string = "Data " + str(barcodeData) + " | Type " + str(barcodeType)
 
-        cv2.putText(image, string, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+        cv2.putText(image, string, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
         print("Barcode: " + barcodeData + " | Type: " + barcodeType)
 
         result = barcodeData
@@ -67,3 +67,4 @@ def getQR(image):
 # getQR()
 
 # QR()
+

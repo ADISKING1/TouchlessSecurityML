@@ -94,28 +94,29 @@ def TouchlessSecurityManager():
 
             # print(total, counter['PIN'], previous, pin)
 
-            if total == previous and total != "10":
+            if total == previous:
                 counter['PIN'] += 1
                 if counter['PIN'] >= num_of_frames:
                     counter['PIN'] = 0
-                    pin += total
-                    main.playMusic('pin')
-                    stateInfo = stateInfos[2]
-                    if len(pin) == 4:
-                        if verifyPwd(pin, password):
-                            state = states[3]
-                            stateInfo = stateInfos[3]
-                            pin = ""
-                            info = name + ", Authorized!"
-                            main.playMusic('beep')
-                        else:
-                            info = name + ", Incorrect PIN. Try Again."
-                            main.playMusic('error')
-                            pin = ""
-                            stateInfo = stateInfos[3]
-            elif total == "10":
-                pin = ""
-                stateInfo = stateInfos[3]
+                    if total == "10":
+                        pin = ""
+                        stateInfo = stateInfos[3]
+                    else:
+                        pin += total
+                        main.playMusic('pin')
+                        stateInfo = stateInfos[2]
+                        if len(pin) == 4:
+                            if verifyPwd(pin, password):
+                                state = states[3]
+                                stateInfo = stateInfos[3]
+                                pin = ""
+                                info = name + ", Authorized!"
+                                main.playMusic('beep')
+                            else:
+                                info = name + ", Incorrect PIN. Try Again."
+                                main.playMusic('error')
+                                pin = ""
+                                stateInfo = stateInfos[3]
             else:
                 counter['PIN'] = 0
 
@@ -156,6 +157,7 @@ def TouchlessSecurityManager():
                     password = ""
                     # Update the counter value to zero.
                     counter['SPIDERMAN SIGN'] = 0
+                    pin = ""
 
             # Otherwise if the gesture of any hand in the frame is not SPIDERMAN SIGN.
             else:

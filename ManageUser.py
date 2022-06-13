@@ -38,8 +38,11 @@ def getUserNamePassword(id):
 
 
 # mySalt = bcrypt.gensalt()
-# createUser('96', 'Aditya', '1234')
+# createUser('18700118096', 'Aditya', '1234')
+# createUser('18700118100', 'Ankur', '2468')
+# createUser('18700118074', 'Deepak', '1357')
+# createUser('18700118060', 'Danish', '8060')
 
-name, password = getUserNamePassword('99')
-if(name != ""):
-    print(verifyPwd('1234', password))
+# name, password = getUserNamePassword('99')
+# if name != "":
+#     print(verifyPwd('1234', password))
